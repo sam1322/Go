@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
 	// Arrays
@@ -105,4 +107,26 @@ func main() {
 	}
 
 	fmt.Println("sum:", sum)
+
+	for i, num := range nums {
+		if num == 3 {
+			fmt.Println("index", i)
+
+		}
+	}
+
+	kvs := map[string]string{"a": "apple", "b": "banana"}
+	fmt.Println("kvs:", kvs)
+	for k, v := range kvs {
+		fmt.Printf("%s -> %s \n", k, v)
+	}
+
+	for k := range kvs {
+		fmt.Println("keys", k)
+	}
+
+	for i, c := range "go" {
+		fmt.Println(i, c)
+	}
+
 }
