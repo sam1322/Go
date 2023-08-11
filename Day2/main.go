@@ -60,4 +60,49 @@ func main() {
 	t := []string{"g", "h", "t"}
 	fmt.Println("dcl:", t)
 
+	TwoD := make([][]int, 3)
+	for i := 0; i < 3; i++ {
+		innerLen := i + 1
+		TwoD[i] = make([]int, innerLen)
+		for j := 0; j < innerLen; j++ {
+			TwoD[i][j] = i + j
+
+		}
+
+	}
+	fmt.Println("2d:", TwoD)
+
+	m := make(map[string]int)
+	m["k1"] = 7
+	m["k2"] = 10
+	m["k4"] = 7
+	m["k5"] = 7
+	fmt.Println("map", m)
+
+	v1 := m["k1"]
+
+	fmt.Println("v1", v1)
+
+	fmt.Println("len:", len(m))
+
+	delete(m, "k2")
+
+	fmt.Println("map", m)
+
+	fmt.Println("len:", len(m))
+
+	A, B := m["k2"]
+	fmt.Println("a:", A, "b:", B)
+	n := map[string]int{"foo": 1, "bar": 2}
+	fmt.Println("map:", n)
+
+	// Range
+	nums := []int{1, 2, 3}
+	sum := 0
+	for _, num := range nums {
+		sum += num
+		fmt.Println(num, sum)
+	}
+
+	fmt.Println("sum:", sum)
 }
