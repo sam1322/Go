@@ -1,16 +1,19 @@
 package main
 
 import (
+	"Go/practice/helper"
 	"fmt"
 	"strings"
 )
 
-func main() {
+var conferenceName = "Go Conference"
 
-	var conferenceName = "Go Conference"
-	const conferenceTickets uint = 50
-	var remainingTickets uint = 50
-	bookings := []string{}
+const conferenceTickets uint = 50
+
+var remainingTickets uint = 50
+var bookings = []string{}
+
+func main() {
 
 	greetUsers(conferenceName, conferenceTickets, remainingTickets)
 
@@ -18,11 +21,11 @@ func main() {
 
 		firstName, lastName, email, userTickets := getUserInput()
 
-		isValidName, isValidEmail, isValidTicketNumber := validateUserInput(firstName, lastName, email, userTickets, remainingTickets)
+		isValidName, isValidEmail, isValidTicketNumber := helper.ValidateUserInput(firstName, lastName, email, userTickets, remainingTickets)
 
 		if isValidEmail && isValidName && isValidTicketNumber {
 
-			bookTicket(remainingTickets, userTickets, bookings, firstName, lastName, email, conferenceName)
+			bookTicket(userTickets, firstName, lastName, email)
 
 			firstNames := printFirstNames(bookings)
 			fmt.Printf("These are all our bookings %v\n", firstNames)
@@ -67,16 +70,8 @@ func printFirstNames(bookings []string) []string {
 		var names = strings.Fields(booking)
 		firstNames = append(firstNames, names[0])
 	}
-
+	fmt.Println("firstNames ", firstNames, bookings)
 	return firstNames
-}
-
-func validateUserInput(firstName, lastName, email string, userTickets, remainingTickets uint) (x, y, z bool) {
-	isValidName := len(firstName) >= 2 && len(lastName) >= 2
-	isValidEmail := strings.Contains(email, "@")
-	isValidTicketNumber := userTickets > 0 && userTickets <= remainingTickets
-	return isValidName, isValidEmail, isValidTicketNumber
-
 }
 
 func getUserInput() (string, string, string, uint) {
@@ -99,7 +94,7 @@ func getUserInput() (string, string, string, uint) {
 	return firstName, lastName, email, userTickets
 }
 
-func bookTicket(remainingTickets, userTickets uint, bookings []string, firstName, lastName, email, conferenceName string) {
+func bookTicket(userTickets uint, firstName, lastName, email string) {
 	remainingTickets = remainingTickets - userTickets
 	bookings = append(bookings, firstName+" "+lastName)
 
