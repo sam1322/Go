@@ -16,7 +16,7 @@
             "request": "launch",
             "mode": "auto",
             // "program": "${workspaceFolder}",
-            // "console": "integratedTerminal"
+            "console": "integratedTerminal"
         }
     ]
 }
