@@ -44,11 +44,31 @@ func main() {
 
 	// Insert()
 
-	Update()
+	// Update()
+
+	QueryUsers()
 }
 
 func QueryUsers() {
+	var (
+		userid    int
+		username  string
+		password  string
+		createdAt time.Time
+		updatedAt time.Time
+	)
 
+	query := `SELECT userid, username, password, created_at , updated_at FROM users WHERE userid = $1`
+
+	var id int
+	fmt.Print("Enter the userId for printing it's userdata : ")
+	fmt.Scan(&id)
+
+	err := db.QueryRow(query, id).Scan(&userid, &username, &password, &createdAt, &updatedAt)
+
+	CheckError(err)
+
+	fmt.Printf("userId : %v\nuserName : %v\npassword : %v\ncreatedAt : %v\nupdated_at : %v\n\n", userid, username, password, createdAt.Format(time.RFC850), updatedAt.Format(time.RFC850))
 }
 
 func CreateTable() {
