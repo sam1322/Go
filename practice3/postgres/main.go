@@ -52,7 +52,7 @@ func main() {
 
 	QueryAllUsers()
 
-	DeleteUser()
+	// DeleteUser()
 }
 
 // for deleting user
@@ -62,20 +62,38 @@ func DeleteUser() {
 	fmt.Scan(&userId)
 
 	query := `DELETE FROM users WHERE userid = $1`
-	_, err := db.Exec(query, userId) // check err
-
+	res, err := db.Exec(query, userId) // check err
 	CheckError(err)
-	fmt.Printf("deleted userId %v successfully\n", userId)
+
+	if err == nil {
+
+		count, err := res.RowsAffected()
+		if err == nil {
+			/* check count and return true/false */
+			if count == 1 {
+				fmt.Printf("Successfully delete userId %v\n", userId)
+			} else {
+				fmt.Printf("No such userId %v found in the database\n", userId)
+			}
+
+			fmt.Println("count : ", count)
+
+		} else {
+			panic(err)
+		}
+
+	}
+
 }
 
 // print all rows
 func QueryAllUsers() {
 	type user struct {
-		Userid    int
-		Username  string
-		Password  string
-		CreatedAt time.Time
-		UpdatedAt time.Time
+		Userid    int       `json:"userid"`
+		Username  string    `json:"username"`
+		Password  string    `json:"password"`
+		CreatedAt time.Time `json:"created_at"`
+		UpdatedAt time.Time `json:"updated_at"`
 	}
 
 	query := `SELECT userid, username, password, created_at , updated_at FROM users`
