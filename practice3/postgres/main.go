@@ -2,7 +2,9 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
+	"log"
 	"time"
 
 	_ "github.com/lib/pq" // Import the PostgreSQL driver
@@ -46,10 +48,71 @@ func main() {
 
 	// Update()
 
-	QueryUsers()
+	// QueryUser()
+
+	QueryAllUsers()
+
+	DeleteUser()
 }
 
-func QueryUsers() {
+// for deleting user
+func DeleteUser() {
+	var userId int
+	fmt.Print("Enter the userId to delete : ")
+	fmt.Scan(&userId)
+
+	query := `DELETE FROM users WHERE userid = $1`
+	_, err := db.Exec(query, userId) // check err
+
+	CheckError(err)
+	fmt.Printf("deleted userId %v successfully\n", userId)
+}
+
+// print all rows
+func QueryAllUsers() {
+	type user struct {
+		Userid    int
+		Username  string
+		Password  string
+		CreatedAt time.Time
+		UpdatedAt time.Time
+	}
+
+	query := `SELECT userid, username, password, created_at , updated_at FROM users`
+
+	rows, err := db.Query(query)
+
+	defer rows.Close()
+
+	CheckError(err)
+
+	// err = rows.Err()
+
+	// CheckError(err)
+
+	var users []user
+	for rows.Next() {
+		var u user
+		err := rows.Scan(&u.Userid, &u.Username, &u.Password, &u.CreatedAt, &u.UpdatedAt)
+		CheckError(err)
+		users = append(users, u)
+	}
+
+	// fmt.Printf("%#v", users)
+	// for _, user := range users {
+	// fmt.Printf("%#v\n", user)
+	empJSON, err := json.MarshalIndent(&users, "", " ")
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+	fmt.Printf("Marshal funnction output %s\n", string(empJSON))
+
+	// }
+
+}
+
+// for single row
+func QueryUser() {
 	var (
 		userid    int
 		username  string
